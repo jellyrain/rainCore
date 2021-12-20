@@ -40,7 +40,7 @@ Watch.prototype.update = function () {
 
 Watch.prototype.remove = function () {
     for (var key in this.deps) {
-        this.deps[key].removeSub()
+        this.deps[key].removeSub(this)
     }
 }
 
@@ -63,6 +63,6 @@ Dep.prototype.notify = function () {
     }
 }
 Dep.prototype.removeSub = function (sub) {
-    var index = indexOf(this.addSub, sub)
+    var index = indexOf(this.subs, sub)
     if (index > -1) this.subs.splice(index, 1)
 }
