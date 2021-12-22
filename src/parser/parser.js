@@ -3,6 +3,7 @@ import { content, instruction } from './mapper'
 var stack = [], mapperContentAst = [], mapperInstructionAst = []
 
 export function parser(template) {
+    stack = [], mapperContentAst = [], mapperInstructionAst = []
     template = removeSpace(template)
     while (template.length) {
         if (/(^\<[^\/][^\<\>]*[^\/]\>)|(^\<.\>)/.test(template)) {
