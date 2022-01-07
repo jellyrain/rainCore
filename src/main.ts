@@ -1,1 +1,1 @@
-console.log('xxx')
+export * from './reactivity/index'
