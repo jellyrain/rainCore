@@ -1,4 +1,6 @@
 export { isReactive, isRef } from './utils'
 export { reactive, toRaw } from './reactive'
-export { watchEffect } from './effect'
 export { ref, unRef } from './ref'
+export { watchEffect } from './watchEffect'
+export { watch } from './watch'
+export { computed } from './computed'

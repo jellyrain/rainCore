@@ -44,7 +44,7 @@ function createReactiveObject(target: any) {
             /* 判断新值和旧值是否不一样 */
             if (hasChanged(oldValue, value)) {
                 /* 触发依赖 */
-                trigger(target, key)
+                trigger(target, key, value)
                 /* 如果是数组 判断是否依赖长度 是 判断是否改变 改变触发依赖 */
                 if (isArray(target) && target.length !== oldLength) trigger(target, 'length')
             }

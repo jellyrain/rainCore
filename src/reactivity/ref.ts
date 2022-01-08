@@ -38,7 +38,7 @@ class refImpl {
             this._value = convert(value)
             this.__rawValue = value
             /* 触发依赖 */
-            trigger(this, 'value')
+            trigger(this, 'value', value)
         }
     }
 }
@@ -47,6 +47,7 @@ function convert(value: any) {
     return isObject(value) ? reactive(value) : value
 }
 
+/* 自动判断是否是 ref 并且获取值 不是 旧返回参数 */
 function unRef(ref: any) {
     return isRef(ref) ? ref.value : ref;
 }

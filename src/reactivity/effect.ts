@@ -1,24 +1,24 @@
 const effectStack: any = []
 /* 暴露依赖 */
-let activeEffect: Function | null
+let activeEffect: any
 
-function watchEffect(func: Function, options: any = {}): Function {
-    const effect = () => {
+function effect(func: Function, options: any = {}): Function {
+    const effectFn = () => {
         try {
-            effectStack.push(effect)
-            activeEffect = effect
+            effectStack.push(effectFn)
+            activeEffect = effectFn
             return func()
         } finally {
             effectStack.pop()
             activeEffect = effectStack[effectStack.length - 1]
         }
     }
+    /* 是否先执行一次 */
+    if (!options.lazy) effectFn()
 
-    if (!options.lazy) effect()
+    effectFn.scheduler = options.scheduler
 
-    effect.scheduler = options.scheduler
-
-    return effect
+    return effectFn
 }
 
 /* 收集依赖 */
@@ -39,12 +39,14 @@ function track(target: any, key: string | symbol): void {
     */
     let deps = depsMap.get(key)
     if (!deps) depsMap.set(key, (deps = new Set()))
+    /* 把用到此数据的依赖挂载到 effectFn 上 提供删除 */
+    activeEffect.deps = deps
     /* 添加依赖 */
     deps.add(activeEffect)
 }
 
 /* 触发依赖 */
-function trigger(target: any, key: string | symbol): void {
+function trigger(target: any, key: string | symbol, value: any): void {
     const depsMap = targetMap.get(target)
     /* 
         查找是否有此响应式数据对应的依赖组 
@@ -58,9 +60,10 @@ function trigger(target: any, key: string | symbol): void {
     const deps = depsMap.get(key)
     if (!deps) return
     /* 触发依赖 */
-    deps.forEach((effect: () => any) => {
-        effect()
+    deps.forEach((effect: { (): any; scheduler: (effect: any, value: any) => any }) => {
+        /* 有调度 scheduler 优先触发 scheduler */
+        effect.scheduler ? effect.scheduler(effect, value) : effect()
     })
 }
 
-export { watchEffect, track, trigger }
+export { effect, track, trigger, targetMap }
