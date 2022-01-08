@@ -46,7 +46,7 @@ function track(target: any, key: string | symbol): void {
 }
 
 /* 触发依赖 */
-function trigger(target: any, key: string | symbol, value: any): void {
+function trigger(target: any, key: string | symbol, value?: any): void {
     const depsMap = targetMap.get(target)
     /* 
         查找是否有此响应式数据对应的依赖组 
