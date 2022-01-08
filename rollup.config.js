@@ -25,9 +25,7 @@ export default {
             exclude: 'node_modules/**/*',
             extensions: ['.ts', '.js']
         }),
-        terser({
-            ie8: true
-        }),
+        terser(),
         del({
             targets: 'dist/*'
         }),

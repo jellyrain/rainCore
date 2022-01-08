@@ -5,16 +5,7 @@ module.exports = {
             {
                 useBuiltIns: 'usage',
                 corejs: { version: 3 },
-                targets: {
-                    ios: '6',
-                    android: '4',
-                    chrome: '60',
-                    firefox: '60',
-                    ie: '8',
-                    safari: '10',
-                    edge: '17',
-                    opera: '10'
-                }
+                targets: '> 1%, not dead'
             }
         ],
         '@babel/preset-typescript'
