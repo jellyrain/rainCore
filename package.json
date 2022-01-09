@@ -6,7 +6,8 @@
   "author": "jellyrain <840519987@qq.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
