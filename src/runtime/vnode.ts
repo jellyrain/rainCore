@@ -16,7 +16,7 @@ function h(type: string | Symbol | object, props: object | null, children: strin
         shapeFlag |= ShapeFlags.ARRAY_CHILDREN
     }
 
-    return { type, props, children, shapeFlag, elm: null, anchor: null }
+    return { type, props, children, shapeFlag, elm: null, anchor: null, key: props && (props as any).key }
 }
 
 export { h }

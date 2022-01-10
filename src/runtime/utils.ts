@@ -11,7 +11,9 @@ export type vNode = {
     /* DOM 节点 */
     elm: HTMLElement | Text | null,
     /* Fragment 专属属性 anchor */
-    anchor: Text | null
+    anchor: Text | null,
+    /* key */
+    key: string | null
 }
 
 /* vNode 类型判断 使用位运算 可以提高效率 */
@@ -77,3 +79,42 @@ export function vNodeType(type: string | Symbol | object): number {
 
 /* dom 属性正则 */
 export const domPropsRE = /[A-Z]|^(value|checked|selected|muted|disabled)$/
+
+/* 最长上升子序列算法 */
+export function getSequence(numberArray: []) {
+    const result: any = [];
+    const position = [];
+    for (let i = 0; i < numberArray.length; i++) {
+        if (numberArray[i] === -1) {
+            continue;
+        }
+        // result[result.length - 1]可能为undefined，此时numberArray[i] > undefined为false
+        if (numberArray[i] > result[result.length - 1]) {
+            result.push(numberArray[i]);
+            position.push(result.length - 1);
+        } else {
+            let l = 0,
+                r = result.length - 1;
+            while (l <= r) {
+                const mid = ~~((l + r) / 2);
+                if (numberArray[i] > result[mid]) {
+                    l = mid + 1;
+                } else if (numberArray[i] < result[mid]) {
+                    r = mid - 1;
+                } else {
+                    l = mid;
+                    break;
+                }
+            }
+            result[l] = numberArray[i];
+            position.push(l);
+        }
+    }
+    let cur = result.length - 1;
+    for (let i = position.length - 1; i >= 0 && cur >= 0; i--) {
+        if (position[i] === cur) {
+            result[cur--] = i;
+        }
+    }
+    return result;
+}
