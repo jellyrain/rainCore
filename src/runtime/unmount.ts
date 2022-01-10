@@ -12,9 +12,10 @@ function unmount(vNode: vNode) {
     }
 }
 
-// TODO 卸载组件
 /* 卸载组件 */
-function unmountComponent(vNode: vNode) { }
+function unmountComponent(vNode: vNode) {
+    unmount((vNode.component as any).subTree)
+}
 
 /* 卸载容器 */
 function unmountFragment(vNode: vNode) {

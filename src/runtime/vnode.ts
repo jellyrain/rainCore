@@ -1,4 +1,4 @@
-import { vNode, isString, isNumber, isArray, ShapeFlags, vNodeType } from './utils'
+import { vNode, isString, isNumber, isArray, ShapeFlags, vNodeType, Fragment, Text, isObject } from './utils'
 
 function h(type: string | Symbol | object, props: object | null, children: string | number | [] | null): vNode {
     let shapeFlag: number = vNodeType(type)
@@ -16,7 +16,21 @@ function h(type: string | Symbol | object, props: object | null, children: strin
         shapeFlag |= ShapeFlags.ARRAY_CHILDREN
     }
 
-    return { type, props, children, shapeFlag, elm: null, anchor: null, key: props && (props as any).key }
+    return { type, props, children, shapeFlag, elm: null, anchor: null, key: props && (props as any).key, component: null }
 }
 
-export { h }
+/* render 返回值 二次处理 */
+function normalizeVNode(result: any) {
+    /* 数组 用 Fragment 包起来 */
+    if (Array.isArray(result)) {
+        return h(Fragment, null, result as any);
+    }
+    /* 对象 直接返回 */
+    if (isObject(result)) {
+        return result;
+    }
+    /* 字符串 或 数组 文Text 包起来 */
+    return h(Text, null, result.toString());
+}
+
+export { h, normalizeVNode }

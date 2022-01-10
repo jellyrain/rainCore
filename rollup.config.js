@@ -25,7 +25,7 @@ export default {
             exclude: 'node_modules/**/*',
             extensions: ['.ts', '.js']
         }),
-        terser(),
+        // terser(),
         del({
             targets: 'dist/*'
         }),

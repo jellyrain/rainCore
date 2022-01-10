@@ -13,7 +13,29 @@ export type vNode = {
     /* Fragment 专属属性 anchor */
     anchor: Text | null,
     /* key */
-    key: string | null
+    key: string | null,
+    /* 组件的实例 */
+    component: object | null
+}
+
+/* 组件实例类型 */
+export type instance = {
+    /* 接收夫组件传递的数据 */
+    props: object | null,
+    /* vNode 上的属性 */
+    attrs: object | null,
+    /* setup 函数返回对象 */
+    setupState: object | null,
+    /* ctx 渲染函数参数 */
+    ctx: object | null,
+    /* 渲染函数 */
+    update: object | null,
+    /* 组件是否挂载 */
+    isMounted: boolean,
+    /* render 函数 返回结果 */
+    subTree: object | null,
+    /* 组件更新时，把新 vNode暂放在这里 */
+    next: object | null
 }
 
 /* vNode 类型判断 使用位运算 可以提高效率 */
@@ -41,6 +63,11 @@ export function isString(target: any) {
 /* 判断是否是字符串 */
 export function isNumber(target: any) {
     return typeof target === 'number'
+}
+
+/* 判断是否是对象 */
+export function isObject(target: any) {
+    return typeof target === 'object' && target != null
 }
 
 /* 判断是否是字符串 */

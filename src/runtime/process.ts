@@ -1,10 +1,16 @@
 import { vNode } from './utils'
 import { patchElement, patchChildren } from './patch'
-import { mountElement, mountTextNode, mountChildren } from './mount'
+import { mountElement, mountTextNode, mountChildren, mountComponent } from './mount'
+import { updateComponent } from './component'
 
-// TODO 处理组件
 /* 处理组件 */
-function processComponent(n1: vNode | null, n2: vNode, container: HTMLElement, anchor?: Text) { }
+function processComponent(n1: vNode | null, n2: vNode, container: HTMLElement, anchor?: Text) {
+    if (n1) {
+        updateComponent(n1, n2)
+    } else {
+        mountComponent(n2, container, anchor)
+    }
+}
 
 /* 处理容器 */
 function processFragment(n1: vNode | null, n2: vNode, container: HTMLElement, anchor?: Text) {

@@ -10,7 +10,6 @@ function patch(n1: vNode | null, n2: vNode, container: HTMLElement, anchor?: Tex
         unmount(n1)
         n1 = null
     }
-
     const { shapeFlag } = n2
     /* 判断 n2 是否是组件 */
     if (shapeFlag & ShapeFlags.COMPONENT) processComponent(n1, n2, container, anchor)
