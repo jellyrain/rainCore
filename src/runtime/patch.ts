@@ -1,4 +1,4 @@
-import { vNode, isSameVNode, ShapeFlags, domPropsRE, isChildrenKey, getSequence } from "./utils"
+import { vNode, isSameVNode, ShapeFlags, domPropsRE, isChildrenKey, getSequence, isString, isObject } from "./utils"
 import { processComponent, processFragment, processText, processElement } from './process'
 import { unmount, unmountChildren } from './unmount'
 import { mountChildren } from './mount'
@@ -52,7 +52,15 @@ function patchProps(oldProps: object | null, newProps: object | null, container:
 function patchDomProp(el: HTMLElement, key: string, prev: string | object, next: string | object | null) {
     switch (key) {
         case 'class':
-            // 暂时认为class就是字符串
+            // class 是 对象
+            if (isObject(next)) {
+                let temp: string = ''
+                for (key in (next as any)) {
+                    if ((next as any)[key]) temp = temp + key + ' '
+                }
+                next = temp.trim()
+            }
+            // class 是 字符串
             // next可能为null，会变成'null'，因此要设成''
             el.className = next as string || ''
             break
@@ -61,6 +69,18 @@ function patchDomProp(el: HTMLElement, key: string, prev: string | object, next:
             if (!next) {
                 el.removeAttribute('style')
             } else {
+                // style 是 字符串
+                if (isString(next)) {
+                    let str: any = next
+                    const result: any = {}
+                    str = str.split(';')
+                    str.forEach((item: any) => {
+                        const temp = item.split(':')
+                        if (temp.length === 2) result[temp[0].trim()] = temp[1].trim()
+                    })
+                    next = result
+                }
+                // style 是 对象
                 for (const styleName in next as object) {
                     (el.style as any)[styleName] = (next as any)[styleName]
                 }
